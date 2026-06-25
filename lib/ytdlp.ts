@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import type { MediaFormat, MediaMetadata, PlatformId } from "./platforms/types";
+import { ffmpegLocationArgs, resolveFfmpegPath, resolveYtdlpPath } from "./binaries";
 
 /**
  * Thin, typed wrapper around the yt-dlp binary.
@@ -8,8 +9,8 @@ import type { MediaFormat, MediaMetadata, PlatformId } from "./platforms/types";
  * (the platform plugins) decide *what* to ask for; this decides *how* to ask.
  */
 
-const YTDLP = process.env.YTDLP_PATH || "yt-dlp";
-const FFMPEG = process.env.FFMPEG_PATH || "ffmpeg";
+const YTDLP = resolveYtdlpPath();
+const FFMPEG = resolveFfmpegPath();
 const DEFAULT_TIMEOUT_MS =
   (Number(process.env.DOWNLOAD_TIMEOUT_SECONDS) || 600) * 1000;
 
@@ -19,9 +20,7 @@ const DEFAULT_TIMEOUT_MS =
  * only pass the flag when an explicit FFMPEG_PATH is set; otherwise we let
  * yt-dlp discover ffmpeg on PATH itself (which it does correctly).
  */
-const FFMPEG_LOCATION_ARGS = process.env.FFMPEG_PATH
-  ? ["--ffmpeg-location", process.env.FFMPEG_PATH]
-  : [];
+const FFMPEG_LOCATION_ARGS = ffmpegLocationArgs();
 
 export class YtdlpError extends Error {
   constructor(

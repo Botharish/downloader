@@ -6,15 +6,14 @@ import { createTempDir, findProducedFile } from "@/lib/temp";
 import { removeDir } from "@/lib/cleanup";
 import { fileToResponse } from "@/lib/stream";
 import { spawn } from "node:child_process";
+import { ffmpegLocationArgs, resolveYtdlpPath } from "@/lib/binaries";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const YTDLP = process.env.YTDLP_PATH || "yt-dlp";
+const YTDLP = resolveYtdlpPath();
 // Only point yt-dlp at an explicit ffmpeg path; a bare name breaks discovery.
-const FFMPEG_LOCATION_ARGS = process.env.FFMPEG_PATH
-  ? ["--ffmpeg-location", process.env.FFMPEG_PATH]
-  : [];
+const FFMPEG_LOCATION_ARGS = ffmpegLocationArgs();
 
 const subtitleSchema = z.object({
   url: urlSchema,
