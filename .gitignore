@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# temp media + downloads (never commit user media)
+/downloads/*
+!/downloads/.gitkeep
+/tmp/
+
+# env
+.env
+.env*.local
+
+# misc
+*.log
+.DS_Store
+Thumbs.db
